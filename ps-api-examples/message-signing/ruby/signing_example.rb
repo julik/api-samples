@@ -13,7 +13,7 @@ class RequestSigningMiddleware < Faraday::Middleware
   end
 
   def generate_auth_headers(env, at_request_time)
-    body_to_digest = env[:request_body].nil? || env[:request_body].empty? ? "X" : env[:request_body]
+    body_to_digest = (env[:request_body].nil? || env[:request_body].empty?) ? "X" : env[:request_body]
     raise "The request_body must be a String - this middleware has to be mounted below :json" unless body_to_digest.is_a?(String)
 
     body_digest = Base64.strict_encode64(Digest::SHA512.digest(body_to_digest))
